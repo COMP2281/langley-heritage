@@ -2,6 +2,6 @@
 
 
 Running frontend:
-  1. First npm install initially
+  1. Initially run : npm install
   2. cd to main directory
   3. npm run dev -> click on provided link 
