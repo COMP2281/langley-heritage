@@ -1,6 +1,6 @@
 function Button({color}){
     return(
-        <button className={color}>Click Me</button>
+        <button style={{ backgroundColor: color }}>Click Me</button>
     );
 }
 
