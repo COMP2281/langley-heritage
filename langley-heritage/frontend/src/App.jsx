@@ -1,15 +1,21 @@
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+
+import Home from './components/homePage'
+import NavBar from './components/navbar';
+import WEPage from './components/w&ePage';
+
 import './App.css'
-import Button from './components/exampleButton'
-import List from './components/list'
 
 function App() {
   return (
-    <>
-      <Button color = 'red'/>
-      <Button color = 'blue'/>
-      <List />
-    </>
-  )
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/w&e" element={<WEPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
