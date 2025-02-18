@@ -1,4 +1,4 @@
-import NavBar from "./navbar";
+import NavBar from "../navbar";
 
 function Home() {
   return (
