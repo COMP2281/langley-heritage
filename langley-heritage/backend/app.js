@@ -1,20 +1,25 @@
-import fs from 'fs'
-
 // Import and initialize express
 import express from 'express'
-const app = express()
+import fs from 'fs'
+import multer from 'multer'
+import csv from 'csv-parser'
+import fileUpload from 'express-fileupload';
+import sqlite3 from 'sqlite3'
 
-// CSV Parser
-const multer = require('multer');
-const csv = require('csv-parser');
-const fs = require('fs');
+const app = express();
+const upload = fileUpload();
+// Import and initialize sqlite3
+const db = InitializeDB()
+// Setup uploading path
+
 
 // Interpret request bodies as JSON
-app.use(express.json())
+app.use(express.json());
+// Provide the directory for static files
+app.use(express.static('../'))
+// File upload function
+app.use(fileUpload());
 
-// Import and initialize sqlite3
-import sqlite3 from 'sqlite3'
-const db = InitializeDB()
 
 // ===== GET Methods =====
 app.get('/', (req, res) => {
@@ -46,28 +51,59 @@ function InitializeDB()
     return db
 }
 
-// Upload CSV file
-app.post('/upload', upload.single('file'), (req, res) => {
-    const results = [];
-    fs.createReadStream(req.file.path)
-        .pipe(csv())
-        .on('data', (data) => results.push(data))
-        .on('end', () => {
-            fs.unlinkSync(req.file.path); // Remove file after processing
-            res.json(results);
-        })
-        .on('error', (error) => {
-            res.status(500).json({ error: error.message });
-        });
+// ===== Landing Page =====
+app.get("/", (req, res) => {
+    res.render('index.html');
 });
 
-// The path to the file is ./data/data.csv
+// Upload CSV file to the web-server
+app.post('upload', (req, res) => {
+    let sampleFile;
+    let uploadPath;
+  
+    uploadPath = path.join(__dirname, '..', 'data', sampleFile.name);
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    sampleFile = req.files.sampleFile;
+    uploadPath = __dirname + './data' + sampleFile.name;
+  
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(uploadPath, function(err) {
+      if (err)
+        return res.status(500).send(err);
+      res.send('File uploaded!');
+    });
+    // Insert the value into the database
+    parseCsvAndInsert(uploadPath);
+});
 
-// Parse the CSV and add it to the database
-function add_csv_to_database(file_path, database) {
-    // Parse the CSV file 
-
-    // Add it to the database
-
+// A function to update the file to the database
+function parseCsvandInsert() {
+    const rows = [];
+    fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (row) => rows.push(row)) // Push each row into an array
+    .on('end', () => {
+      // Insert each row into the database
+      rows.forEach((row) => {
+        db.run(
+          'INSERT INTO data (column1, column2, column3) VALUES (?, ?, ?)',
+          [row.column1, row.column2, row.column3],
+          (err) => {
+            if (err) {
+              console.error('Error inserting row:', err.message);
+            }
+          }
+        );
+      });
+      console.log('CSV data inserted successfully.');
+    })
+    .on('error', (error) => {
+      console.error('Error reading CSV file:', error.message);
+    });
 }
+
 export { app };
