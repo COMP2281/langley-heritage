@@ -11,15 +11,18 @@ import './App.css'
 function App() {
   return (
     <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mission" element={<Mission />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <div className="bg-[#F7F7F7] min-h-screen">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/mission" element={<Mission />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
+
 
 export default App

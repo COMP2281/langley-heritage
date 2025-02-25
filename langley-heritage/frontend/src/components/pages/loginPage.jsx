@@ -1,8 +1,8 @@
 function Login(){
     return (
-        <>
-            <p>Login Page</p>
-        </>
+        <div className="flex flex-col justify-center items-center min-h-screen">
+            Login
+	    </div>
     );
 }
 

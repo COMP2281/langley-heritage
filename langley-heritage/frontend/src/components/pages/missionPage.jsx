@@ -1,9 +1,9 @@
 
 function Mission(){
     return (
-        <>
-            <p>Mission Page</p>
-        </>
+        <div className="flex flex-col justify-center items-center min-h-screen">
+            Mission
+	    </div>
     );
 }
 
