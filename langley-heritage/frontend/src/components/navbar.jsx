@@ -49,7 +49,6 @@ function NavBar() {
 				))}
 			</ul>
 
-			{/* Desktop Horizontal Menu */}
 			<ul className="hidden md:flex space-x-6">
 				{["Home", "Our Mission", "Contact", "Login"].map((item, index) => (
 					<li key={index} className="relative font-semibold text-center">
