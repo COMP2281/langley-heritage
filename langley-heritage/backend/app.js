@@ -22,10 +22,10 @@ app.use(fileUpload());
 
 
 // ===== GET Methods =====
-app.get('/', (req, res) => {
-    db.run('SELECT * FROM Records', QueryCallback)
-    res.send('Hello, Express!');
-});
+//app.get('/', (req, res) => {
+//    db.run('SELECT * FROM Records', QueryCallback)
+//    res.send('Hello, Express!');
+//});
 
 // ===== Database Setup =====
 function QueryCallback(runResult)
@@ -53,7 +53,7 @@ function InitializeDB()
 
 // ===== Landing Page =====
 app.get("/", (req, res) => {
-    res.render('index.html');
+    res.render('index');
 });
 
 // Upload CSV file to the web-server
