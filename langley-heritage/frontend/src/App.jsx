@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
-import Home from './components/pages/homePage'
+import Home from './components/pages/home'
 import NavBar from './components/navbar';
-import Mission from './components/pages/missionPage';
-import Contact from './components/pages/contactPage';
-import Login from './components/pages/loginPage';
+import Mission from './components/pages/ourmission';
+import Contact from './components/pages/contact';
+import Login from './components/pages/login';
 
 import './App.css'
 
@@ -26,3 +26,4 @@ function App() {
 
 
 export default App
+
