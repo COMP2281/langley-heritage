@@ -1,11 +1,15 @@
 import { useState } from 'react';
 
+// LINK TO BACKEND
+
 function Login() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
+    // to do
 	const handleSubmit = () => {};
 
+    // returns the page with log in form included(could be modularised)
 	return (
 		<div className="flex flex-col min-h-screen bg-[#F7F7F7]">
 			<div className="flex justify-center items-center flex-1">
@@ -20,7 +24,7 @@ function Login() {
                                 id="username"
                                 type="username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(inp) => setUsername(inp.target.value)}
                                 className="p-3 rounded-md border-none bg-white focus:outline-none focus:ring-0"
                                 placeholder="Enter your username"
                                 required
@@ -33,14 +37,13 @@ function Login() {
 								id="password"
 								type="password"
 								value={password}
-								onChange={(e) => setPassword(e.target.value)}
+								onChange={(inp) => setPassword(inp.target.value)}
 								className="p-3 rounded-md border-none bg-white focus:outline-none focus:ring-0"
 								placeholder="Enter your password"
 								required
 							/>
 						</div>
 
-						{/* Submit Button */}
 						<div className="flex justify-center">
 							<button
 								type="submit"
@@ -53,7 +56,6 @@ function Login() {
 				</div>
 			</div>
 			
-			{/* Footer section */}
 			<div className="bg-[#780502] w-full h-20 fixed bottom-0 left-0 flex justify-center items-center">
 				<span className="text-white text-sm font-bold">If you are a member, login to make changes to the site</span>
 			</div>

@@ -46,7 +46,7 @@ function NavBar() {
 						<Link
 							to={links[index]}
 							className={centerUnderlineHover}
-							onClick={() => setMenuOpen(false)} // Close menu when clicking a link
+							onClick={() => setMenuOpen(false)}
 						>
 							{item}
 						</Link>

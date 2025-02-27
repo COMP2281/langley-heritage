@@ -1,6 +1,9 @@
 import personIcon from "../../../img/person_icon.png"
 
-function Record({record}){ // record : {firstName, surname, burialDate, age, plotNumber, BorA ,address, inscription, personalLinks, other}
+//TO BE USED BY BACKEND
+
+function Record({record}){
+    // Record Data
     const data = [
         { label: "Burial Date", value: record.burialDate },
         { label: "Age", value: record.age },

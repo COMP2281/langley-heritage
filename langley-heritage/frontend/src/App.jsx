@@ -11,6 +11,7 @@ import MapPage from './components/pages/mapPage';
 import './App.css'
 
 function App() {
+	// temporary example record
 	const exampleRecord = {
 		firstName: "John",
 		surname: "Doe",
