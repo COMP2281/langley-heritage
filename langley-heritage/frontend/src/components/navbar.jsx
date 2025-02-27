@@ -5,7 +5,8 @@ function NavBar() {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const centerUnderlineHover =
 		"relative pb-1 after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 after:origin-center hover:after:left-0 hover:after:w-full";
-	const links = ["/", "/mission", "contact", "login"];
+	const links = ["/", "/mission", "/contact", "/map","/testing","/login"];
+	const tabs = ["Home", "Our Mission", "Contact", "Map","Test","Login"];
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -27,7 +28,7 @@ function NavBar() {
 			<div className="md:hidden">
 				<button
 					onClick={() => setMenuOpen((prev) => !prev)}
-					className="text-2xl cursor-pointer px-3 py-2 rounded-md"
+					className="text-2xl cursor-pointer px-3 py-2 rounded-md transition-all duration-300 hover:bg-white hover:text-[#780502]"
 				>
 					☰
 				</button>
@@ -40,9 +41,13 @@ function NavBar() {
 						: "hidden"
 				} md:hidden`}
 			>
-				{["Home", "Our Mission", "Contact", "Login"].map((item, index) => (
+				{tabs.map((item, index) => (
 					<li key={index} className="relative font-semibold text-center">
-						<Link to={links[index]} className={centerUnderlineHover}>
+						<Link
+							to={links[index]}
+							className={centerUnderlineHover}
+							onClick={() => setMenuOpen(false)} // Close menu when clicking a link
+						>
 							{item}
 						</Link>
 					</li>
@@ -50,7 +55,7 @@ function NavBar() {
 			</ul>
 
 			<ul className="hidden md:flex space-x-6">
-				{["Home", "Our Mission", "Contact", "Login"].map((item, index) => (
+				{tabs.map((item, index) => (
 					<li key={index} className="relative font-semibold text-center">
 						<Link to={links[index]} className={centerUnderlineHover}>
 							{item}
