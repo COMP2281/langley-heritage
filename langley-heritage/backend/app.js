@@ -1,31 +1,47 @@
-// Import and initialize express
+// Import and initialize modules
 import express from 'express'
 import fs from 'fs'
-import multer from 'multer'
 import csv from 'csv-parser'
 import fileUpload from 'express-fileupload';
 import sqlite3 from 'sqlite3'
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
-const upload = fileUpload();
-// Import and initialize sqlite3
 const db = InitializeDB()
-// Setup uploading path
 
-
-// Interpret request bodies as JSON
+// Express setup
 app.use(express.json());
-// Provide the directory for static files
-app.use(express.static('../'))
-// File upload function
+app.use(express.static('./dist'))
 app.use(fileUpload());
 
+// === Global Variables ===
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// ===== GET Methods =====
-//app.get('/', (req, res) => {
-//    db.run('SELECT * FROM Records', QueryCallback)
-//    res.send('Hello, Express!');
-//});
+// ===== Endpoints =====
+// Upload CSV file to the web-server
+app.post('upload', (req, res) => {
+    let sampleFile;
+    let uploadPath;
+  
+    uploadPath = path.join(__dirname, '..', 'data', sampleFile.name);
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    sampleFile = req.files.sampleFile;
+    uploadPath = __dirname + './data' + sampleFile.name;
+  
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(uploadPath, function(err) {
+      if (err)
+        return res.status(500).send(err);
+      res.send('File uploaded!');
+    });
+    // Insert the value into the database
+    parseCsvAndInsert(uploadPath);
+});
 
 // ===== Database Setup =====
 function QueryCallback(runResult)
@@ -51,37 +67,8 @@ function InitializeDB()
     return db
 }
 
-// ===== Landing Page =====
-app.get("/", (req, res) => {
-    res.render('index');
-});
-
-// Upload CSV file to the web-server
-app.post('upload', (req, res) => {
-    let sampleFile;
-    let uploadPath;
-  
-    uploadPath = path.join(__dirname, '..', 'data', sampleFile.name);
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-  
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    sampleFile = req.files.sampleFile;
-    uploadPath = __dirname + './data' + sampleFile.name;
-  
-    // Use the mv() method to place the file somewhere on your server
-    sampleFile.mv(uploadPath, function(err) {
-      if (err)
-        return res.status(500).send(err);
-      res.send('File uploaded!');
-    });
-    // Insert the value into the database
-    parseCsvAndInsert(uploadPath);
-});
-
 // A function to update the file to the database
-function parseCsvandInsert() {
+function parseCsvAndInsert() {
     const rows = [];
     fs.createReadStream(filePath)
     .pipe(csv())
