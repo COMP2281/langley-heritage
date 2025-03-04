@@ -41,7 +41,7 @@ app.post('upload', (req, res) => {
       res.send('File uploaded!');
     });
     // Insert the value into the database
-    parseCsvAndInsert(uploadPath);
+    parseCSVAndInsert(uploadPath);
 });
 
 // ===== Database Setup =====
@@ -69,7 +69,7 @@ function InitializeDB()
 }
 
 // A function to update the file to the database
-function parseCsvAndInsert() {
+function parseCSVAndInsert(filePath) {
     const rows = [];
     fs.createReadStream(filePath)
     .pipe(csv())
