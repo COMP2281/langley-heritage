@@ -1,5 +1,5 @@
 // Import and initialize modules
-import express from 'express'
+import express, { response } from 'express'
 import fs from 'fs'
 import csv from 'csv-parser'
 import fileUpload from 'express-fileupload';
@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 
 const app = express();
 const db = InitializeDB()
+
 
 // Express setup
 app.use(express.json());
@@ -94,3 +95,36 @@ function parseCsvAndInsert() {
 }
 
 export { app };
+
+// ===== LOG IN =====
+app.post('/login', (req, res) => {
+  // username and password
+  const data = req.body;
+  const hashed_username = md5Hash(data.username);
+  const hashed_password = md5Hash(data.password);
+  const config = require('./config.json');
+  if (hashed_username === config.username && hashed_password === config.password) {
+    // Redirect to the page and do something here
+    res.status(200);    
+  } else {
+    // Add a page showing Error HTML
+    res.status(401).send("Unauthorized: Invalid Username Or Password");
+  }
+});
+
+// ===== SIGN UP =====
+app.post('/signup', (req, res) => {
+  let config = require('./config.json');
+  if (config.check === true) {
+    res.status(401).send("Already signed up");
+  }
+  config.username = username;
+  config.password = password;
+  config.check = true;
+  res.status(200).send("Signed up successfully");
+});
+
+// ===== MD5 ======
+function md5Hash(data) {
+  return crypto.createHash('md5').update(data).digest('hex');
+}
