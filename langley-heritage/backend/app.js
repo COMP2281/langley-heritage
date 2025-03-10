@@ -36,7 +36,7 @@ app.post('/upload', upload.single("file"), (req, res) => {
 	const fileContent = req.file.buffer.toString("utf8");
 
 	// Insert the value into the database
-    ParseCSVAndInsert(uploadPath);
+    parseCSVAndInsert(uploadPath);
 });
 
 // ===== Database Setup =====
@@ -77,11 +77,11 @@ async function InitializeDB()
 		// Add default records from CSV
 		console.log("Adding default records")
 		let defaultRecordsStr = fs.readFileSync('./backend/data/burialrecords.csv').toString()
-		ParseCSVAndInsert(defaultRecordsStr)
+		parseCSVAndInsert(defaultRecordsStr)
     }
 }
 
-function ObjectToSQLParams(obj)
+function objectToSQLParams(obj)
 {
 	let ret = {}
 	for (let [key, value] of Object.entries(obj))
@@ -89,14 +89,14 @@ function ObjectToSQLParams(obj)
 	return ret
 }
 
-function AddRecord(record)
+function addRecord(record)
 {
-	console.log(ObjectToSQLParams(record))
+	console.log(objectToSQLParams(record))
 	db.run(`INSERT INTO Records VALUES (${nextRecordID++}, $surname, $firstname, $middlename, $dob, $dod,
-		$burialDate, $plotNumber, $burialType, $address, $graveLat, $graveLong, $description)`, ObjectToSQLParams(record), QueryCallback)
+		$burialDate, $plotNumber, $burialType, $address, $graveLat, $graveLong, $description)`, objectToSQLParams(record), QueryCallback)
 }
 
-function ParseCSVAndInsert(fileStr) {
+function parseCSVAndInsert(fileStr) {
 	// Convert file string to a stream
 	let fileStream = Readable.from(fileStr)
 
@@ -106,7 +106,7 @@ function ParseCSVAndInsert(fileStr) {
     .on('data', (row) => rows.push(row))
     .on('end', () => {
 		for (let row of rows)
-			AddRecord(Record.FromCSVRow(row))
+			addRecord(Record.FromCSVRow(row))
     })
     .on('error', (error) => {
       console.error('Error reading CSV file:', error.message);

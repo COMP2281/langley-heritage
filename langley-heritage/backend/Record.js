@@ -1,15 +1,15 @@
-function StrOrNull(str)
+function strOrNull(str)
 {
 	return str ? str : null
 }
 
-function GetDateYear(dateStr)
+function getDateYear(dateStr)
 {
 	let date = new Date(Date.parse(dateStr))
 	return date.getFullYear()
 }
 
-function InferDobAndDod(record, dob, dod, age)
+function inferDobAndDod(record, dob, dod, age)
 {
 	// Assign values if given
 	if (dob) record.dob = dob
@@ -17,9 +17,9 @@ function InferDobAndDod(record, dob, dod, age)
 
 	// Infer DOB/DOD from age
 	if (!dob && dod && age)
-		record.dob = (GetDateYear(dod) - parseInt(age)).toString()
+		record.dob = (getDateYear(dod) - parseInt(age)).toString()
 	else if (!dod && dob && age)
-		record.dod = (GetDateYear(dob) + parseInt(age)).toString()
+		record.dod = (getDateYear(dob) + parseInt(age)).toString()
 }
 
 class Record {
@@ -42,14 +42,14 @@ class Record {
 	static FromCSVRow(row)
 	{
 		let ret = new Record()
-		ret.surname = StrOrNull(row['SURNAME'])
-		ret.firstname = StrOrNull(row['FIRST NAME'])
-		ret.middlename = StrOrNull(row['MIDDLE NAMES'])
-		InferDobAndDod(ret, row['DOB'], row['DOD'], row['AGE'])
-		ret.burialDate = StrOrNull(row['BURIAL DATE'])
-		ret.plotNumber = StrOrNull(row['PLOT NUMBER'])
-		ret.burialType = StrOrNull(row['BURIAL/ASHES'])
-		ret.address = StrOrNull(row['ADDRESS'])
+		ret.surname = strOrNull(row['SURNAME'])
+		ret.firstname = strOrNull(row['FIRST NAME'])
+		ret.middlename = strOrNull(row['MIDDLE NAMES'])
+		inferDobAndDod(ret, row['DOB'], row['DOD'], row['AGE'])
+		ret.burialDate = strOrNull(row['BURIAL DATE'])
+		ret.plotNumber = strOrNull(row['PLOT NUMBER'])
+		ret.burialType = strOrNull(row['BURIAL/ASHES'])
+		ret.address = strOrNull(row['ADDRESS'])
 		ret.graveLat = null // TODO
 		ret.graveLong = null // TODO
 		ret.description = null // TODO
