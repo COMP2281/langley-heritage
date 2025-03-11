@@ -1,10 +1,8 @@
 // Import and initialize modules
-import express, { response } from 'express'
+import express from 'express'
 import fs from 'fs'
 import csv from 'csv-parser'
 import sqlite3 from 'sqlite3'
-import path from 'path';
-import { fileURLToPath } from 'url';
 import multer from 'multer';
 import { Readable } from 'stream';
 import { Record } from './Record.js'
@@ -22,22 +20,25 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage })
 
 // === Global Variables ===
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 let nextRecordID = 0
 
 // ===== Endpoints =====
 // Upload CSV file to the web-server
 app.post('/upload', upload.single("file"), (req, res) => {
 	if (!req.file) {
-        return res.status(400).send("No file uploaded.");
-    }
+		return res.status(400).send("No file uploaded.");
+	}
 
 	// Read file contents to a string
 	const fileContent = req.file.buffer.toString("utf8");
 
 	// Insert the value into the database
-    parseCSVAndInsert(uploadPath);
+	parseCSVAndInsert(fileContent);
 });
+
+app.get('/record', (req, res) => {
+	const recordID = req.query.id;
+})
 
 // ===== Database Setup =====
 function QueryCallback(runResult)
@@ -91,7 +92,6 @@ function objectToSQLParams(obj)
 
 function addRecord(record)
 {
-	console.log(objectToSQLParams(record))
 	db.run(`INSERT INTO Records VALUES (${nextRecordID++}, $surname, $firstname, $middlename, $dob, $dod,
 		$burialDate, $plotNumber, $burialType, $address, $graveLat, $graveLong, $description)`, objectToSQLParams(record), QueryCallback)
 }
@@ -100,7 +100,7 @@ function parseCSVAndInsert(fileStr) {
 	// Convert file string to a stream
 	let fileStream = Readable.from(fileStr)
 
-    const rows = [];
+  const rows = [];
 	fileStream
     .pipe(csv())
     .on('data', (row) => rows.push(row))
@@ -119,10 +119,10 @@ app.post('/adminlogin', (req, res) => {
   const data = req.body;
   const hashed_username = md5Hash(data.username);
   const hashed_password = md5Hash(data.password);
-  const config = require('./config.json');
+  const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
   if (hashed_username === config.username && hashed_password === config.password) {
     // Redirect to the page and do something here
-    res.status(200);    
+    res.status(200);
   } else {
     // Add a page showing Error HTML
     res.status(401).send("Unauthorized: Invalid Username Or Password");
