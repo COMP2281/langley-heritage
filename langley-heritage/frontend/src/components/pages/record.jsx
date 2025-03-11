@@ -7,16 +7,20 @@ const useRecord = (id) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	useEffect(async () => {
-		let response = await fetch(`/record?id=${id}`, { mode: "cors" })
-		console.log(`Status code: ${response.status}`)
-		if (!response.ok) {
-			throw new Error("Server errored getting record");
+	useEffect(() => {
+		async function fetchRecord()
+		{
+			let response = await fetch(`/record?id=${id}`)
+			if (!response.ok) {
+				throw new Error("Server errored getting record");
+			}
+			let newRecord = await response.json()
+
+			setRecord(newRecord);
+			setLoading(false)
 		}
-		let newRecord = await response.json()
-		console.log(`RECORD ${newRecord}`)
-		setRecord(newRecord);
-		setLoading(false)
+
+		fetchRecord();
 	}, [id]);
 
 	return { record, loading, error };
@@ -31,17 +35,19 @@ function Record({ id }) {
 	const titleFont = "font-serif font-bold italic";
 	const centre = "flex justify-center items-center";
 
+	let hiddenAttributes = ["RecordID", "Firstname", "Middlename", "Surname"]
+
 	return (
 		<div className={`${centre} min-h-screen gap-y-12 flex-col`}>
 			<div className={`${centre} p-4`}>
 				<img src={personIcon} alt="Record Image" className="w-32 h-32 rounded-md" />
 				<h2 className="text-3xl font-bold font-serif">
-					{record.FirstName} {record.MiddleName ? record.MiddleName : null} {record.Surname}
+					{record.Firstname} {record.Middlename ? record.Middlename : ""} {record.Surname}
 				</h2>
 			</div>
 			<div className={`${centre} flex-col gap-y-2`}>
 				{Object.entries(record).map(([key, value], index) => (
-					key !== "RecordID" && key !== "FirstName" && key !== "MiddleName" && key !== "Surname" && value !== null && (
+					!hiddenAttributes.includes(key) && value && (
 						<div key={index} className={`${centre} gap-x-10`}>
 							<p>
 								<span className={titleFont}>{key}: </span>

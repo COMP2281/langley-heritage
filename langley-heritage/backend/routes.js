@@ -25,11 +25,9 @@ router.post('/upload', upload.single("file"), (req, res) => {
 
 router.get('/record', (req, res) => {
 	const recordID = req.query.id;
-	console.log(`recordID: ${recordID}`)
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
 		if (err)
 			res.sendStatus(404)
-    console.log(row);
 		res.send(JSON.stringify(row))
     });
 })
