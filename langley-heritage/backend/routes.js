@@ -28,8 +28,23 @@ router.get('/search', (req, res) => {
 
 	console.log(query)
 
-	db.all(`SELECT * FROM Records WHERE CONCAT_WS(' ', Firstname, Middlename, Surname) = ?`, query, (err, rows) =>
+	db.all(`
+		SELECT RecordID, Surname, Firstname, Middlename, DOB, DOD 
+		FROM (
+			SELECT *, 
+				CASE 
+					WHEN CONCAT_WS(' ', Firstname, Middlename, Surname) = $query THEN 1
+					WHEN CONCAT(Firstname, ' ', Surname) = $query THEN 2
+					WHEN Surname = $query THEN 3
+					WHEN Firstname = $query THEN 4
+				END AS match_priority
+			FROM Records
+		) AS FilteredRecords
+		WHERE match_priority IS NOT NULL
+		ORDER BY match_priority;
+		`, {$query: query}, (err, rows) =>
 	{
+		console.log(`John count: ${rows.length}`)
 		res.send(rows)
 	})
 })
