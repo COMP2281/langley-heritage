@@ -33,7 +33,7 @@ function App() {
 				<Route path="/mission" element={<Mission />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
-				<Route path="/testing" element={<Record record = {exampleRecord}/>} />
+				<Route path="/testing" element={<Record record = {8}/>} />
 				<Route path="/map" element={<MapPage />} />
 			</Routes>
 		</div>

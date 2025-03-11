@@ -5,7 +5,6 @@ const app = express();
 InitializeDB();
 
 // Express setup
-app.use(express.json());
 app.use(express.static('./dist'))
 
 // === Exports ===

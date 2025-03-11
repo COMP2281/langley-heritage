@@ -27,8 +27,8 @@ app.get('/record', (req, res) => {
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
 		if (err)
 			res.sendStatus(404)
-        console.log(row);
-		res.send(row)
+    console.log(row);
+		res.send(JSON.stringify(row))
     });
 })
 
