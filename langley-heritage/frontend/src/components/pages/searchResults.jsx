@@ -1,34 +1,28 @@
 import { useState, useEffect } from "react";
 
-const useSearch = (id) => {
-    const [records, setRecords] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+function SearchResults({ query }) {
+    //const { records, loading, error } = useSearch(query);
+    let records = [{id : 2, name : "john"}]
 
-    useEffect(() => {
-        fetch(`/search`, { mode: "cors" })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Server errored getting record list");
-                }
-                return response.json();
-            })
-            .then((data) => setRecords(data))
-            .catch((err) => setError(err))
-            .finally(() => setLoading(false));
-    }, [id]);
+    // if (loading) return <p>Loading...</p>;
+    // if (error) return <p>A network error was encountered</p>;
 
-    return { records, loading, error };
-};
+    const titleFont = "font-serif font-bold italic";
+    const centre = "flex justify-center items-center";
 
-const titleFont = "font-serif font-bold italic";
-const centre = "flex justify-center items-center";
-function SearchResults(){
-    return(
+    
+    return (
         <div className={`${centre} min-h-screen gap-y-12 flex-col`}>
-            hello
+            <span>Found {records.length} Records</span>
+            {records.forEach((record,recordIndex) => {
+                Object.entries(record).map(([key, value], index) => {
+                    <div className="bg-[#780502] p-8 rounded-lg shadow-xl w-full max-w-md">
+                        record
+                    </div>
+                })
+            })}
         </div>
-    )
+    );
 }
 
-export default SearchResults
+export default SearchResults;
