@@ -1,15 +1,17 @@
 import multer from 'multer';
 import fs from 'fs';
 import { parseCSVAndInsert, md5Hash } from './functions.js';
-import { app } from './app.js'
 import { db } from './functions.js'
+import express from 'express'
 
 // Multer setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+const router = express.Router();
+
 // Upload CSV file to the web-server
-app.post('/upload', upload.single("file"), (req, res) => {
+router.post('/upload', upload.single("file"), (req, res) => {
   if (!req.file) {
         return res.status(400).send("No file uploaded.");
     }
@@ -21,7 +23,7 @@ app.post('/upload', upload.single("file"), (req, res) => {
     parseCSVAndInsert(fileContent);
 });
 
-app.get('/record', (req, res) => {
+router.get('/record', (req, res) => {
 	const recordID = req.query.id;
 	console.log(`recordID: ${recordID}`)
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
@@ -33,7 +35,7 @@ app.get('/record', (req, res) => {
 })
 
 // ===== Admin Log In =====
-app.post('/adminlogin', (req, res) => {
+router.post('/adminlogin', (req, res) => {
   // username and password
   const data = req.body;
   const hashed_username = md5Hash(data.username);
@@ -47,3 +49,5 @@ app.post('/adminlogin', (req, res) => {
     res.status(401).send("Unauthorized: Invalid Username Or Password");
   }
 });
+
+export { router as userRoutes};
