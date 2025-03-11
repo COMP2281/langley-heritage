@@ -59,6 +59,34 @@ router.get('/record', (req, res) => {
     });
 })
 
+
+// Add a record to the database
+router.post('/add', (req, res) => {
+	const data = red.body;
+	const {
+		Surname, Firstname, Middlename = "", DOB, DOD = "", Age = null,
+		BurialDate, PlotNumber, BurialType, Address,
+		GraveLat = null, GraveLong = null, Description = ""
+	} = req.body;
+	const sql = `
+    INSERT INTO burial_records 
+    (Surname, Firstname, Middlename, 
+		DOB, DOD, Age,
+		BurialDate, PlotNumber, BurialType, 
+		Address, GraveLat, GraveLong, 
+	Description)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+	db.run(sql, [Surname, Firstname, Middlename, DOB, DOD, Age, BurialDate, PlotNumber, BurialType, Address, GraveLat, GraveLong, Description],
+		function (err) {
+			if (err) {
+				res.status(500).json({ error: err.message });
+			} else {
+			res.status(201).json({ message: "Record added successfully", id: recordID });
+		}
+	});
+});
+
+
 // ===== Admin Log In =====
 router.post('/adminlogin', (req, res) => {
   // username and password
