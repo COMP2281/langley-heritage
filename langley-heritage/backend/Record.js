@@ -3,6 +3,11 @@ function strOrNull(str)
 	return str ? str : null
 }
 
+function intOrNull(str)
+{
+	return str ? parseInt(str) : null
+}
+
 function getDateYear(dateStr)
 {
 	let date = new Date(Date.parse(dateStr))
@@ -12,6 +17,7 @@ function getDateYear(dateStr)
 function inferDobAndDod(record, dob, dod, age)
 {
 	// Assign values if given
+	record.age = intOrNull(age)
 	if (dob) record.dob = dob
 	if (dod) record.dod = dod
 
@@ -23,13 +29,14 @@ function inferDobAndDod(record, dob, dod, age)
 }
 
 class Record {
-	constructor(surname, firstname, middlename, dob, dod, burialDate, plotNumber, burialType, address, graveLat, graveLong, description)
+	constructor(surname, firstname, middlename, dob, dod, age, burialDate, plotNumber, burialType, address, graveLat, graveLong, description)
 	{
 		this.surname = surname
 		this.firstname = firstname
 		this.middlename = middlename
 		this.dob = dob
 		this.dod = dod
+		this.age = age
 		this.burialDate = burialDate
 		this.plotNumber = plotNumber
 		this.burialType = burialType

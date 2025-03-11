@@ -30,6 +30,7 @@ async function InitializeDB()
 			Middlename TEXT,
 			DOB TEXT,
 			DOD TEXT,
+			Age INTEGER,
 			BurialDate TEXT,
 			PlotNumber TEXT,
 			BurialType TEXT,
@@ -59,8 +60,7 @@ function objectToSQLParams(obj)
 
 function addRecord(record)
 {
-	db.run(`INSERT INTO Records VALUES (${nextRecordID++}, $surname, $firstname, $middlename, $dob, $dod,
-		$burialDate, $plotNumber, $burialType, $address, $graveLat, $graveLong, $description)`, objectToSQLParams(record), QueryCallback)
+	db.run(`INSERT INTO Records VALUES (${nextRecordID++}, $surname, $firstname, $middlename, $dob, $dod, $age, $burialDate, $plotNumber, $burialType, $address, $graveLat, $graveLong, $description)`, objectToSQLParams(record), QueryCallback)
 }
 
 function parseCSVAndInsert(fileStr) {
@@ -84,4 +84,4 @@ function md5Hash(data) {
 	return crypto.createHash('md5').update(data).digest('hex');
 };
 
-export { InitializeDB, addRecord, parseCSVAndInsert, md5Hash };
+export { InitializeDB, addRecord, parseCSVAndInsert, md5Hash, db };

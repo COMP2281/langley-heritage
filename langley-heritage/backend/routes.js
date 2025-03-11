@@ -1,7 +1,8 @@
-import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import { parseCSVAndInsert, md5Hash } from './functions.js';
+import { app } from './app.js'
+import { db } from './functions.js'
 
 // Multer setup
 const storage = multer.memoryStorage();
@@ -22,11 +23,16 @@ router.post('/upload', upload.single("file"), (req, res) => {
     parseCSVAndInsert(fileContent);
 });
 
-router.get('/record', (req, res) => {
-    // const recordID = req.query.id;
-    // Implement logic to fetch and return record details
-    res.send("hello");
-});
+app.get('/record', (req, res) => {
+	const recordID = req.query.id;
+	console.log(`recordID: ${recordID}`)
+	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
+		if (err)
+			res.sendStatus(404)
+        console.log(row);
+		res.send(row)
+    });
+})
 
 // ===== Admin Log In =====
 router.post('/adminlogin', (req, res) => {
