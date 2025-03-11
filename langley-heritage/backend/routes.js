@@ -23,6 +23,18 @@ router.post('/upload', upload.single("file"), (req, res) => {
     parseCSVAndInsert(fileContent);
 });
 
+router.get('/search', (req, res) => {
+	const query = req.query.query
+
+	console.log(query)
+
+	db.all(`SELECT * FROM Records WHERE CONCAT_WS(' ', Firstname, Middlename, Surname) = ?`, query, (err, rows) =>
+	{
+		res.send(rows)
+	})
+})
+
+// Retrieve a single record
 router.get('/record', (req, res) => {
 	const recordID = req.query.id;
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {

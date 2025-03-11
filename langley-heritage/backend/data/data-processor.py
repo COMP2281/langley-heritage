@@ -3,6 +3,7 @@ import pandas as pd
 def convert_xlsx_to_csv(inPath, outPath, desiredColumns):
 	data = pd.read_excel(inPath, parse_dates=['DOB', 'DOD', 'BURIAL DATE'])
 	data = data[desiredColumns] # Keep only desired columns
+	data = data.map(lambda x: x.strip() if isinstance(x, str) else x) # Strip spaces
 	data.to_csv(outPath, index=False)
 
 def main():
