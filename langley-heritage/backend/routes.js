@@ -1,8 +1,8 @@
 import multer from 'multer';
 import fs from 'fs';
 import { parseCSVAndInsert, md5Hash } from './functions.js';
-import { app } from './app.js'
 import { db } from './functions.js'
+import express from 'express'
 
 // Multer setup
 const storage = multer.memoryStorage();
@@ -23,7 +23,7 @@ router.post('/upload', upload.single("file"), (req, res) => {
     parseCSVAndInsert(fileContent);
 });
 
-app.get('/record', (req, res) => {
+router.get('/record', (req, res) => {
 	const recordID = req.query.id;
 	console.log(`recordID: ${recordID}`)
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
