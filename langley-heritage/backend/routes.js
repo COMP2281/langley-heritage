@@ -60,7 +60,7 @@ router.get('/record', (req, res) => {
 })
 
 
-// Add a record to the database
+// ====Add a record to the database=====
 router.post('/add', (req, res) => {
 	const data = red.body;
 	const {
@@ -86,6 +86,21 @@ router.post('/add', (req, res) => {
 	});
 });
 
+// ==== Remove a record to the database=====
+router.post('/remove', (req, res) => {
+	const record_id = req.body.id;
+	const query = 'DELETE FROM records WHERE RecordID = ?';
+	db.run(query, [record_id], function(err) {
+		if (err) {
+		  return res.status(500).send('Error removing record');
+		}
+		if (this.changes === 0) {
+		  return res.status(404).send('Record not found');
+		}
+		console.log('Record removed successfully!');
+		res.status(200).send('Record removed successfully');
+	});
+});
 
 // ===== Admin Log In =====
 router.post('/adminlogin', (req, res) => {
