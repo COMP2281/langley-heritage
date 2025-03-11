@@ -1,5 +1,5 @@
 {
-    "username": "",
-    "password": "",
-    "check": false
+    "username": null,
+    "password": null,
+    "exist": false
 }

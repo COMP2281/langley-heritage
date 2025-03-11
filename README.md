@@ -10,3 +10,8 @@ npm run build
 npm start
 ```
 3. Access the webpage at `http://localhost:8080`
+
+## API documentation
+```
+
+```
