@@ -22,7 +22,7 @@ function App() {
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
 				{/* <Route path="/testing" element={<Record id = {8}/>} /> */}
-				<Route path="/testing" element={<SearchResults/>} />
+				<Route path="/testing" element={<SearchResults query = {"Robert"}/>} />
 				<Route path="/map" element={<MapPage />} />
 			</Routes>
 		</div>
