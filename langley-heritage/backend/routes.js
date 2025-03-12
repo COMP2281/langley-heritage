@@ -4,7 +4,6 @@ import { parseCSVAndInsert, md5Hash } from './functions.js';
 import { db } from './functions.js';
 import express from 'express';
 import crypto from 'crypto';
-import cookieParser from 'cookie-parser';
 
 // Multer setup
 const storage = multer.memoryStorage();

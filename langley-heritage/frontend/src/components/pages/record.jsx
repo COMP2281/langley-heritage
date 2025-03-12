@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import personIcon from "../../../img/person_icon.png";
-import { useLocation, useNavigate } from "react-router-dom"; 
+import { useLocation, useNavigate } from "react-router-dom";
+
+function valueMissing(val)
+{
+    return !val && (val !== 0)
+}
 
 const useRecord = (id) => {
     const [record, setRecord] = useState(null);
@@ -65,7 +70,7 @@ function Record() {
             </div>
             <div className={`${centre} flex-col gap-y-2`}>
                 {Object.entries(record).map(([key, value], index) => (
-                    !hiddenAttributes.includes(key) && value && (
+                    !hiddenAttributes.includes(key) && !valueMissing(value) && (
                         <div key={index} className={`${centre} gap-x-10`}>
                             <p>
                                 <span className={titleFont}>{key}: </span>
