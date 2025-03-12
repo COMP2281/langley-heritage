@@ -1,14 +1,17 @@
 import multer from 'multer';
 import fs from 'fs';
 import { parseCSVAndInsert, md5Hash } from './functions.js';
-import { db } from './functions.js'
-import express from 'express'
+import { db } from './functions.js';
+import express from 'express';
+import crypto from 'crypto';
+import cookieParser from 'cookie-parser';
 
 // Multer setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const router = express.Router();
+
 
 // Upload CSV file to the web-server
 router.post('/upload', upload.single("file"), (req, res) => {
@@ -110,15 +113,22 @@ router.post('/adminlogin', (req, res) => {
   const hashed_password = md5Hash(data.password);
   const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
   if (username === config.username && hashed_password === config.password) {
-    // Redirect to the page and do something here
-    res.status(200);
-  } else {
+	const sessionCookie = crypto.randomBytes(32).toString('hex');
+    // Set the session cookie (adjust options based on your security needs)
+    res.cookie('session_id', sessionCookie, {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production',  
+      maxAge: 36000000000000, 
+    });
+	console.log("Cookies has been set");
+    res.status(200).send("Sucessfully log in");
+  } else {''
     // Add a page showing Error HTML
     res.status(401).send("Unauthorized: Invalid Username Or Password");
   }
 });
 
-// ===== Admin Log In =====
+// ===== Admin Sign Up =====
 router.get('/signup', (req, res) => {
 	// Assume that the form contains email, checked email, password
 	const rawData = fs.readFileSync('./config.json');
