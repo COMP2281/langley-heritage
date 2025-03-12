@@ -4,6 +4,7 @@ import { parseCSVAndInsert, md5Hash } from './functions.js';
 import { db } from './functions.js';
 import express from 'express';
 import crypto from 'crypto';
+import cookieParser from 'cookie-parser';
 
 // Multer setup
 const storage = multer.memoryStorage();
@@ -113,7 +114,8 @@ router.post('/adminlogin', (req, res) => {
   const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
   if (username === config.username && hashed_password === config.password) {
 	const sessionCookie = crypto.randomBytes(32).toString('hex');
-    // Set the session cookie (adjust options based on your security needs)
+
+    // Set the session cookie
     res.cookie('session_id', sessionCookie, {
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production',  
