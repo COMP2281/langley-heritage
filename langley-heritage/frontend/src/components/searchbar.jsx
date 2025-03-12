@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function search(query, navigate)
 {
-	navigate(`/testing`,{state: {query: query}})
+	navigate(`/searchPage`,{state: {query: query}})
 }
 
 function SearchBar() {
@@ -14,7 +14,7 @@ function SearchBar() {
 
 	const handleKeyPress = (e) => {
         if (e.key === "Enter") {
-            search(searchTextRef.current.value, navigate); // Trigger search on "Enter"
+            search(searchTextRef.current.value, navigate); 
         }
     };
 

@@ -5,8 +5,8 @@ function NavBar() {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const centerUnderlineHover =
 		"relative pb-1 after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 after:origin-center hover:after:left-0 hover:after:w-full";
-	const links = ["/", "/mission", "/contact", "/map","/testing","/login"];
-	const tabs = ["Home", "Our Mission", "Contact", "Map","Test","Login"];
+	const links = ["/", "/mission", "/contact", "/map","/login"];
+	const tabs = ["Home", "Our Mission", "Contact", "Map","Login"];
 
 	useEffect(() => {
 		const handleResize = () => {
