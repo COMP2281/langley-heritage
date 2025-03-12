@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import personIcon from "../../../img/person_icon.png";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../searchbar";
 
 function viewRecord(id, navigate) {

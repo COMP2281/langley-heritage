@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import personIcon from "../../../img/person_icon.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; 
 
 const useRecord = (id) => {
     const [record, setRecord] = useState(null);
@@ -30,11 +30,12 @@ const useRecord = (id) => {
 };
 
 function Record() {
-    const location = useLocation(); 
-    const id = location.state?.id; 
+    const location = useLocation();
+    const navigate = useNavigate(); 
+    const id = location.state?.id;
 
     if (!id) {
-        return <p>Error: No record ID provided.</p>; 
+        return <p>Error: No record ID provided.</p>;
     }
 
     const { record, loading, error } = useRecord(id);
@@ -49,6 +50,13 @@ function Record() {
 
     return (
         <div className={`${centre} min-h-screen gap-y-12 flex-col`}>
+            <button
+                onClick={() => navigate(-1)} 
+                className="absolute top-4 left-4 bg-[#780502] text-white px-4 py-2 rounded-lg hover:bg-[#5a0401] transition-all duration-300 pt-22"
+            >
+                Return
+            </button>
+
             <div className={`${centre} p-4`}>
                 <img src={personIcon} alt="Record Image" className="w-32 h-32 rounded-md" />
                 <h2 className="text-3xl font-bold font-serif">
