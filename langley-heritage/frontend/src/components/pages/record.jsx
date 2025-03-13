@@ -35,6 +35,8 @@ const useRecord = (id) => {
 };
 
 function Record() {
+    const getTitle = {Firstname : "First Name", Middlename : "Middle Name", Surname : "Surname", BurialDate : "Burial Date", BurialType: "Burial Type", DOB : "Date of Birth", DOD : "Date of Death", Age : "Age", b : "Burial", a : "Ashes", Address: "Address",PlotNumber : "Plot Number" , Description : "Description"};
+
     const location = useLocation();
     const navigate = useNavigate(); 
     const id = location.state?.id;
@@ -73,8 +75,8 @@ function Record() {
                     !hiddenAttributes.includes(key) && !valueMissing(value) && (
                         <div key={index} className={`${centre} gap-x-10`}>
                             <p>
-                                <span className={titleFont}>{key}: </span>
-                                {value}
+                                <span className={titleFont}>{getTitle[key]}: </span>
+                                {value === "b" || value === "a" ? getTitle[value] : value}
                             </p>
                         </div>
                     )

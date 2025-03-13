@@ -58,10 +58,19 @@ function SearchResults() {
                     return (
                         <div
                             key={recordIndex}
-                            className="border-2 border-[#D3D3D3] p-8 rounded-lg shadow-xl w-full max-w-2xl hover:border-[#780502] transition-all duration-300 bg-transparent"
+                            className="border-2 border-[#D3D3D3] p-8 rounded-lg shadow-xl w-full max-w-2xl hover:border-[#780502] transition-all duration-300 bg-transparent flex items-center"
                             onClick={() => viewRecord(record.RecordID, navigate)}
                         >
-                            <span>{record.Firstname} {record.Surname}</span>
+                            <img src={personIcon} alt="Person Icon" className="w-16 h-16 mr-4" />
+
+                            <div className="flex-1">
+                                <span className="text-lg font-bold">{record.Firstname} {record.Surname}</span>
+                            </div>
+
+                            <div className="text-right text-sm text-gray-600">
+                                {record.DOB && <p>DOB: {record.DOB}</p>}
+                                {record.DOD && <p>DOD: {record.DOD}</p>}
+                            </div>
                         </div>
                     );
                 })}
