@@ -16,10 +16,12 @@ let userCookies = [];
 
 // Upload CSV file to the web-server
 router.post('/upload', upload.single("file"), (req, res) => {
+	/*
 	const cookies = req.body.cookies;
 	if (!userCookies.includes(cookies)) {
 		return res.status(403).send("Forbidden: Invalid or missing session.");
 	}
+	*/	
 	if (!req.file) {
 			return res.status(400).send("No file uploaded.");
 	}
@@ -32,10 +34,12 @@ router.post('/upload', upload.single("file"), (req, res) => {
 });
 
 router.get('/search', (req, res) => {
+	/*
 	const cookies = req.body.cookies;
 	if (!userCookies.includes(cookies)) {
 		return res.status(403).send("Forbidden: Invalid or missing session.");
 	}
+	*/
 	const query = req.query.query
 
 	console.log(query)
@@ -63,10 +67,12 @@ router.get('/search', (req, res) => {
 
 // Retrieve a single record
 router.get('/record', (req, res) => {
+	/*
 	const cookies = req.body.cookies;
 	if (!userCookies.includes(cookies)) {
 		return res.status(403).send("Forbidden: Invalid or missing session.");
 	}
+	*/
 	const recordID = req.query.id;
 	db.get("SELECT * FROM Records WHERE RecordID = ?", recordID, (err, row) => {
 		if (err)
@@ -78,10 +84,12 @@ router.get('/record', (req, res) => {
 
 // ====Add a record to the database=====
 router.post('/add', (req, res) => {
+	/*
 	const cookies = req.body.cookies;
 	if (!userCookies.includes(cookies)) {
 		return res.status(403).send("Forbidden: Invalid or missing session.");
 	}
+	*/
 	const {
 		Surname, Firstname, Middlename = "", DOB, DOD = "", Age = null,
 		BurialDate, PlotNumber, BurialType, Address,
@@ -107,10 +115,6 @@ router.post('/add', (req, res) => {
 
 // ==== Remove a record to the database=====
 router.post('/remove', (req, res) => {
-	const cookies = req.body.cookies;
-	if (!userCookies.includes(cookies)) {
-		return res.status(403).send("Forbidden: Invalid or missing session.");
-	}
 	const record_id = req.body.id;
 	const query = 'DELETE FROM records WHERE RecordID = ?';
 	db.run(query, [record_id], function(err) {
@@ -127,10 +131,6 @@ router.post('/remove', (req, res) => {
 
 // ===== Admin Log In =====
 router.post('/adminlogin', (req, res) => {
-   const cookies = req.body.cookies;
-   if (!userCookies.includes(cookies)) {
-	return res.status(403).send("Forbidden: Invalid or missing session.");
-   }
   // username and password
   const data = req.body;
   const username = data.username;
@@ -138,6 +138,7 @@ router.post('/adminlogin', (req, res) => {
   const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
   if (username === config.username && hashed_password === config.password) {
+	/*
 	const sessionCookie = crypto.randomBytes(32).toString('hex');
 	userCookies.push(sessionCookie);
     // Set the session cookie
@@ -147,6 +148,7 @@ router.post('/adminlogin', (req, res) => {
       maxAge: 36000000000000, 
     });
 	console.log("Cookies has been set");
+	*/
     res.status(200).send("Sucessfully log in");
   } else {''
     // Add a page showing Error HTML
@@ -156,10 +158,12 @@ router.post('/adminlogin', (req, res) => {
 
 // ===== Admin Sign Up =====
 router.get('/signup', (req, res) => {
+	/*
 	const cookies = req.body.cookies;
     if (!userCookies.includes(cookies)) {
 		return res.status(403).send("Forbidden: Invalid or missing session.");
    	}
+	*/
 	// Assume that the form contains email, checked email, password
 	const rawData = fs.readFileSync('./config.json');
  	const config = JSON.parse(rawData);
