@@ -1,7 +1,15 @@
-// Import and initialize express
-import express from "express"
-const app = express()
+// Import and initialize modules
+import express from 'express'
+import { InitializeDB } from './functions.js';
+import { userRoutes } from './routes.js';
 
-// Interpret request bodies as JSON
-app.use(express.json())
+const app = express();
+await InitializeDB();
 
+// Express setup
+app.use(express.static('./dist'))
+
+app.use(userRoutes);
+
+// === Exports ===
+export { app };
