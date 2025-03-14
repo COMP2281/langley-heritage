@@ -1,0 +1,9 @@
+#root,
+html,
+body {
+  height: 100%;
+}
+
+.user-info {
+  padding-right: 20px;
+}
